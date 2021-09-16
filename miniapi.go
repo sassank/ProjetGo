@@ -19,12 +19,6 @@ func main() {
 	http.ListenAndServe(":4567", nil)
 }
 
-func notAllowed(w http.ResponseWriter, req *http.Request) {
-	w.WriteHeader(http.StatusMethodNotAllowed)
-	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprintf(w, req.Method+" is not allowed.")
-}
-
 //afficher l'heure actuelle
 func Heure(w http.ResponseWriter, req *http.Request) {
 	if req.Method != "GET" {
@@ -32,6 +26,12 @@ func Heure(w http.ResponseWriter, req *http.Request) {
 	} else {
 		fmt.Fprintf(w, time.Now().Format("15:04"))
 	}
+}
+
+func notAllowed(w http.ResponseWriter, req *http.Request) {
+	w.WriteHeader(http.StatusMethodNotAllowed)
+	w.Header().Set("Content-Type", "application/json")
+	fmt.Fprintf(w, req.Method+" is not allowed.")
 }
 
 //ajouter des donnees
@@ -59,7 +59,7 @@ func Resultat(w http.ResponseWriter, req *http.Request) {
 }
 
 func addEntry(author, message string) {
-	f, err := os.OpenFile("data.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	f, err := os.OpenFile("results.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 
 	if err != nil {
 		log.Fatal(err)
